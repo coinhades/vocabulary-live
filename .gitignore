@@ -1,0 +1,14 @@
+node_modules/
+frontend/dist/
+dist/
+.env
+.tools/
+.cache/
+test-results/
+test-results-learning/
+playwright-report/
+*.exe
+*.log
+*.out
+coverage/
+.DS_Store
