@@ -1,0 +1,12 @@
+.git
+.tools
+.cache
+**/node_modules
+frontend/dist
+dist
+test-results
+test-results-learning
+playwright-report
+docs/evidence
+.env
+*.log

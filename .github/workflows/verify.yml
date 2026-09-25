@@ -1,0 +1,39 @@
+name: Verify
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  correctness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      redis:
+        image: redis:8.10.2-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      REDIS_URL: redis://127.0.0.1:6379/0
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version: '1.27.1'
+          cache-dependency-path: backend/go.sum
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '24.14.0'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --prefix frontend
+      - run: cd frontend && npx playwright install --with-deps chromium
+      - run: make verify
+      - run: docker compose build
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            docs/evidence/screenshots
+            test-results

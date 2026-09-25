@@ -1,0 +1,49 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      REDIS_NAMESPACE: ${REDIS_NAMESPACE:-vocab-practice}
+      APP_ENV: ${APP_ENV:-development}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080,http://127.0.0.1:8080}
+      TRUSTED_PROXY_CIDRS: ${TRUSTED_PROXY_CIDRS:-}
+      RATE_LIMIT_PER_SECOND: ${RATE_LIMIT_PER_SECOND:-10}
+      RATE_LIMIT_BURST: ${RATE_LIMIT_BURST:-40}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_TTS_ENABLED: ${OPENAI_TTS_ENABLED:-true}
+      OPENAI_TTS_MODEL: ${OPENAI_TTS_MODEL:-gpt-4o-mini-tts}
+      OPENAI_TTS_VOICE: ${OPENAI_TTS_VOICE:-cedar}
+      AI_LEARNING_ENABLED: ${AI_LEARNING_ENABLED:-true}
+      OPENAI_TEXT_MODEL: ${OPENAI_TEXT_MODEL:-gpt-5.4-mini}
+      AI_AUTHORING_ENABLED: ${AI_AUTHORING_ENABLED:-false}
+      AUTHORING_ADMIN_SECRET: ${AUTHORING_ADMIN_SECRET:-}
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app", "--healthcheck"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    stop_grace_period: 12s
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  redis:
+    image: redis:8.10.2-alpine
+    restart: unless-stopped
+    command: [redis-server, --appendonly, "yes", --appendfsync, everysec, --maxmemory, 256mb, --maxmemory-policy, noeviction]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+    stop_grace_period: 15s
+volumes:
+  redis-data:
