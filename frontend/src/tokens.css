@@ -1,0 +1,29 @@
+:root {
+  color-scheme: dark;
+  --paper: #060a24;
+  --white: #f8f7ff;
+  --ink: #f8f7ff;
+  --forest: #4decff;
+  --muted: #bdc5eb;
+  --line: #303d76;
+  --pale: #152348;
+  --lime: #42f0ba;
+  --cyan: #11dff6;
+  --violet: #8849ff;
+  --pink: #f64e94;
+  --surface: #101837;
+  --sans: Inter, "Segoe UI", Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+  --practice-height: 770px;
+  --practice-fit: 820px;
+  --motion-fast: 140ms;
+  --motion-base: 220ms;
+  --motion-slow: 300ms;
+  --motion-stagger: 60ms;
+  --motion-attention: 1000ms;
+  --motion-activity: 1400ms;
+  --motion-scroll-idle: 180ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}

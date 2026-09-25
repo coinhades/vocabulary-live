@@ -1,0 +1,399 @@
+/* Motion acknowledges state. All durations/easings live in tokens.css. */
+.page-stage,
+.panel-stage,
+.question-stage,
+.preview-stage,
+.changing-value {
+  display: grid;
+  position: relative;
+}
+.page-stage > main,
+.panel-stage > *,
+.question-stage > *,
+.preview-stage > *,
+.changing-value > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.page-stage > main {
+  width: 100%;
+}
+.changing-value {
+  display: inline-grid;
+  vertical-align: baseline;
+  font-variant-numeric: tabular-nums;
+}
+.changing-value-current {
+  display: inline-block;
+}
+[inert] {
+  pointer-events: none;
+}
+
+.page-enter-active,
+.panel-enter-active,
+.question-enter-active,
+.preview-enter-active,
+.feedback-enter-active,
+.notice-enter-active,
+.tab-enter-active {
+  transition:
+    opacity var(--motion-base) var(--ease-enter),
+    transform var(--motion-base) var(--ease-enter);
+}
+.page-leave-active,
+.panel-leave-active,
+.question-leave-active,
+.preview-leave-active,
+.feedback-leave-active,
+.notice-leave-active,
+.tab-leave-active {
+  transition:
+    opacity var(--motion-fast) var(--ease-exit),
+    transform var(--motion-fast) var(--ease-exit);
+}
+.page-enter-from,
+.panel-enter-from,
+.question-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-leave-to,
+.panel-leave-to,
+.question-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+.preview-enter-from,
+.feedback-enter-from,
+.notice-enter-from,
+.tab-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.preview-leave-to,
+.feedback-leave-to,
+.notice-leave-to,
+.tab-leave-to {
+  opacity: 0;
+}
+.notice-enter-active,
+.notice-leave-active {
+  transition-property: opacity;
+}
+.notice-enter-from {
+  transform: none;
+}
+
+.value-enter-active,
+.value-leave-active {
+  transition:
+    opacity var(--motion-fast) var(--ease-standard),
+    transform var(--motion-fast) var(--ease-standard);
+}
+.value-enter-from {
+  opacity: 0;
+  transform: translateY(3px);
+}
+.value-leave-to {
+  opacity: 0;
+  transform: translateY(-3px);
+}
+.button .value-enter-from {
+  opacity: 1;
+  transform: none;
+}
+.button .value-leave-active {
+  visibility: hidden;
+}
+
+.button,
+.demo-codes button,
+.mobile-tabs button,
+.answer-option,
+.option-letter,
+.connection {
+  transition:
+    background-color var(--motion-fast) var(--ease-standard),
+    border-color var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) var(--ease-standard);
+}
+.answer-option:has(input:not(:disabled)):hover {
+  border-color: #a7baaa;
+  background-color: #f4f7f0;
+}
+.answer-option.selected:has(input:not(:disabled)):hover {
+  border-color: var(--forest);
+}
+.options.is-checking .answer-option:not(.selected) {
+  opacity: 0.64;
+}
+.options.is-checking .answer-option.selected {
+  border-color: var(--forest);
+}
+.question-footer .button {
+  min-inline-size: 210px;
+}
+.question-progress > span {
+  transition: transform var(--motion-slow) var(--ease-standard);
+}
+
+.activity-indicator {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.activity-indicator i {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: activity var(--motion-activity) var(--ease-standard) infinite;
+}
+.activity-indicator i:nth-child(2) {
+  animation-delay: var(--motion-stagger);
+}
+.activity-indicator i:nth-child(3) {
+  animation-delay: calc(2 * var(--motion-stagger));
+}
+.connection.is-active .live-dot {
+  animation: activity var(--motion-activity) var(--ease-standard) infinite;
+}
+@keyframes activity {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.preview-stage {
+  min-block-size: 173px;
+  margin: 12px 0 22px;
+}
+.preview-stage .quiz-preview {
+  margin: 0;
+}
+.preview-loading,
+.preview-error {
+  align-content: center;
+}
+.preview-error .text-button {
+  margin-top: 12px;
+}
+.skeleton-line {
+  height: 12px;
+  width: 78%;
+  border-radius: 4px;
+  background: #dfe6d8;
+  margin-bottom: 12px;
+  animation: activity var(--motion-activity) var(--ease-standard) infinite;
+}
+.skeleton-title {
+  width: 88%;
+  height: 20px;
+  margin-bottom: 18px;
+}
+.skeleton-short {
+  width: 57%;
+}
+
+.feedback-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.feedback-symbol {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.feedback-symbol circle {
+  stroke-opacity: 0.35;
+}
+.feedback-fresh .feedback-symbol {
+  animation: confirm-mark var(--motion-base) var(--ease-enter) both;
+}
+.feedback-fresh .feedback-points {
+  animation: settle-in var(--motion-base) var(--ease-enter) both;
+}
+.feedback-fresh .feedback-answers {
+  animation: settle-in var(--motion-base) var(--ease-enter)
+    var(--motion-stagger) both;
+}
+.feedback-fresh .feedback-explanation {
+  animation: settle-in var(--motion-base) var(--ease-enter)
+    calc(2 * var(--motion-stagger)) both;
+}
+.feedback-fresh.incorrect .feedback-points {
+  animation: none;
+}
+@keyframes confirm-mark {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes settle-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.standings-move {
+  transition: transform var(--motion-slow) var(--ease-standard);
+}
+.standings-row-enter-active {
+  transition:
+    opacity var(--motion-base) var(--ease-enter),
+    transform var(--motion-base) var(--ease-enter);
+}
+.standings-row-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.standings-motion-paused .standings-move {
+  transition: none;
+  transform: none !important;
+}
+.standings tbody td,
+.standings tbody th {
+  position: relative;
+}
+.row-ack {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #afc393;
+  opacity: 0;
+  animation: rank-ack var(--motion-attention) var(--ease-standard);
+}
+@keyframes rank-ack {
+  0% {
+    opacity: 0.22;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Only entering completion, never a subsequent rank update, gets a sequence. */
+.completion.panel-enter-active .completion-icon,
+.completion.panel-enter-active h2 {
+  animation: settle-in var(--motion-base) var(--ease-enter)
+    var(--motion-stagger) both;
+}
+.completion.panel-enter-active .result-grid {
+  animation: settle-in var(--motion-base) var(--ease-enter)
+    calc(2 * var(--motion-stagger)) both;
+}
+.completion.panel-enter-active .review-summary,
+.completion.panel-enter-active > .button {
+  animation: settle-in var(--motion-base) var(--ease-enter)
+    calc(3 * var(--motion-stagger)) both;
+}
+.completion.panel-enter-active {
+  transition-duration: calc(var(--motion-base) + 3 * var(--motion-stagger));
+}
+
+/* Native details stays usable everywhere; supporting browsers animate only
+   this user-requested local expansion, the sole intentional layout animation. */
+@supports (interpolate-size: allow-keywords) and
+  (transition-behavior: allow-discrete) {
+  .missed-review::details-content {
+    interpolate-size: allow-keywords;
+    block-size: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+      block-size var(--motion-base) var(--ease-standard),
+      opacity var(--motion-base) var(--ease-standard),
+      content-visibility var(--motion-base) allow-discrete;
+  }
+  .missed-review[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+.motion-hidden *,
+[inert] .activity-indicator i,
+[inert] .skeleton-line {
+  animation-play-state: paused;
+}
+@media (max-width: 760px) {
+  .play-grid > #question-view,
+  .play-grid > #standings-view {
+    grid-area: 1 / 1;
+  }
+  .preview-stage {
+    margin: 8px 0 16px;
+    min-block-size: 184px;
+  }
+  .tab-enter-from {
+    transform: translateY(3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+    --motion-stagger: 0ms;
+  }
+  .activity-indicator i,
+  .connection.is-active .live-dot,
+  .skeleton-line,
+  .feedback-fresh .feedback-symbol,
+  .feedback-fresh .feedback-points,
+  .feedback-fresh .feedback-answers,
+  .feedback-fresh .feedback-explanation,
+  .completion.panel-enter-active .completion-icon,
+  .completion.panel-enter-active h2,
+  .completion.panel-enter-active .result-grid,
+  .completion.panel-enter-active .review-summary,
+  .completion.panel-enter-active > .button,
+  .row-ack {
+    animation: none;
+  }
+  .page-enter-from,
+  .page-leave-to,
+  .panel-enter-from,
+  .panel-leave-to,
+  .question-enter-from,
+  .question-leave-to,
+  .preview-enter-from,
+  .feedback-enter-from,
+  .notice-enter-from,
+  .tab-enter-from,
+  .value-enter-from,
+  .value-leave-to,
+  .standings-row-enter-from {
+    transform: none;
+    opacity: 1;
+  }
+  .standings-move {
+    transition: none;
+    transform: none !important;
+  }
+}
