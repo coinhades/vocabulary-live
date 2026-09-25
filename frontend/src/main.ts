@@ -4,7 +4,9 @@ import "./theme-light.css";
 import "./learning.css";
 import "./surface-polish.css";
 async function mount() {
-  const { default: App } = await import("./App.vue");
+  const { default: App } = await (location.pathname === "/instructor"
+    ? import("./InstructorApp.vue")
+    : import("./App.vue"));
   createApp(App).mount("#app");
 }
 
